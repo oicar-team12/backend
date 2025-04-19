@@ -1,22 +1,25 @@
 ## Setup
 
-1. Create a .env file in project root, add these values and change the username and password:
+1. Create a .env file in project root, add these values and change the username, password and JWT secret:
 ```
 POSTGRES_HOST=postgres
 POSTGRES_DB=app
 POSTGRES_USERNAME=myuser
 POSTGRES_PASSWORD=mypassword
+JWT_SECRET=5eb2a801c9msh9fa39b1fc78692fp118655jsn959cd091155d
 ```
 
 2. Run the container(s):
    1. To run both PostgreSQL and Spring Boot containers, use `docker-compose --profile backend up`
    2. To only run the PostgreSQL container, use `docker-compose up`
-      1. When running Spring Boot locally and not in a container, you must also provide the following VM options and provide correct username and password:
+      1. When running Spring Boot locally and not in a container, you must also provide the following VM options and
+         provide correct username, password and JWT secret:
 ```
 -DPOSTGRES_HOST=localhost
 -DPOSTGRES_DB=app
 -DPOSTGRES_USERNAME=myuser
 -DPOSTGRES_PASSWORD=mypassword
+-DJWT_SECRET=5eb2a801c9msh9fa39b1fc78692fp118655jsn959cd091155d
 ```
 
 ### Tips

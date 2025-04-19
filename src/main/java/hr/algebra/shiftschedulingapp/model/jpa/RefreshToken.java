@@ -10,8 +10,10 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -19,6 +21,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @Entity
+@Accessors(chain = true)
 @Table(name = "refresh_tokens")
 public class RefreshToken {
 
@@ -39,7 +42,7 @@ public class RefreshToken {
   private UUID token;
 
   @NotNull
-  @ColumnDefault("false")
-  @Column(name = "revoked", nullable = false)
-  private boolean revoked = false;
+  @ColumnDefault("CURRENT_TIMESTAMP")
+  @Column(name = "expires_at", nullable = false)
+  private OffsetDateTime expiresAt;
 }

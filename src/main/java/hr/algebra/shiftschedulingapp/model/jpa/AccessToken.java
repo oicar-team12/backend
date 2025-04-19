@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.OffsetDateTime;
@@ -20,6 +21,7 @@ import static java.lang.Integer.MAX_VALUE;
 @Getter
 @Setter
 @Entity
+@Accessors(chain = true)
 @Table(name = "access_tokens")
 public class AccessToken {
 
