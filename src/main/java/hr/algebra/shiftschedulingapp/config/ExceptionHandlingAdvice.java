@@ -1,5 +1,6 @@
 package hr.algebra.shiftschedulingapp.config;
 
+import hr.algebra.shiftschedulingapp.exception.ForbiddenException;
 import hr.algebra.shiftschedulingapp.exception.RestException;
 import hr.algebra.shiftschedulingapp.exception.UnauthorizedException;
 import hr.algebra.shiftschedulingapp.model.dto.RestErrorDto;
@@ -48,6 +49,11 @@ public class ExceptionHandlingAdvice {
   @ExceptionHandler(UnauthorizedException.class)
   public ResponseEntity<Object> unauthorizedException() {
     return new ResponseEntity<>(UNAUTHORIZED);
+  }
+
+  @ExceptionHandler(ForbiddenException.class)
+  public ResponseEntity<Object> forbiddenException() {
+    return new ResponseEntity<>(FORBIDDEN);
   }
 
   @ExceptionHandler(AccessDeniedException.class)

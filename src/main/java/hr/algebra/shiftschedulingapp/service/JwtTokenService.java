@@ -35,17 +35,12 @@ public class JwtTokenService {
       .compact();
   }
 
-  public User extractUser(String token) {
-    Claims claims = extractAllClaims(token);
-
-    return new User()
-      .setFirstName((String) claims.get("firstName"))
-      .setLastName((String) claims.get("lastName"))
-      .setEmail((String) claims.get("email"));
-  }
-
   public boolean isTokenValid(AccessToken accessToken) {
     return extractExpiration(accessToken.getToken()).after(new Date());
+  }
+
+  public Long extractUserId(String token) {
+    return extractClaim(token, claims -> claims.get("uid", Integer.class)).longValue();
   }
 
   public Date extractExpiration(String token) {
@@ -67,9 +62,7 @@ public class JwtTokenService {
 
   private Map<String, Object> generateTokenClaims(User user) {
     Map<String, Object> claims = new HashMap<>();
-    claims.put("firstName", user.getFirstName());
-    claims.put("lastName", user.getLastName());
-    claims.put("email", user.getEmail());
+    claims.put("uid", user.getId());
     return claims;
   }
 

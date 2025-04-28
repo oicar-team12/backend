@@ -4,6 +4,7 @@ import hr.algebra.shiftschedulingapp.exception.UnauthorizedException;
 import hr.algebra.shiftschedulingapp.model.jpa.User;
 import hr.algebra.shiftschedulingapp.service.AccessTokenService;
 import hr.algebra.shiftschedulingapp.service.JwtTokenService;
+import hr.algebra.shiftschedulingapp.service.UserService;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,6 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final JwtTokenService jwtTokenService;
   private final AccessTokenService accessTokenService;
+  private final UserService userService;
 
   @Override
   protected void doFilterInternal(
@@ -42,7 +44,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7);
         try {
           if (accessTokenService.isExistingTokenValid(token)) {
-            User user = jwtTokenService.extractUser(token);
+            Long userId = jwtTokenService.extractUserId(token);
+            User user = userService.loadById(userId)
+              .orElseThrow(UnauthorizedException::new);
+
             Authentication authentication = new UsernamePasswordAuthenticationToken(user, token, emptyList());
             getContext().setAuthentication(authentication);
           }
