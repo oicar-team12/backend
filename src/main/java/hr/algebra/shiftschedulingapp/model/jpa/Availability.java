@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -19,6 +20,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "availabilities")
 public class Availability {
 
@@ -30,9 +32,13 @@ public class Availability {
 
   @NotNull
   @ManyToOne(optional = false)
-  @ColumnDefault("nextval('availabilities_user_id_seq')")
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
+
+  @NotNull
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "group_id", nullable = false)
+  private Group group;
 
   @NotNull
   @Column(name = "date", nullable = false)
@@ -41,4 +47,11 @@ public class Availability {
   @NotNull
   @Column(name = "is_available", nullable = false)
   private boolean isAvailable;
+
+  public Availability(User user, Group group, LocalDate date, boolean isAvailable) {
+    this.user = user;
+    this.group = group;
+    this.date = date;
+    this.isAvailable = isAvailable;
+  }
 }

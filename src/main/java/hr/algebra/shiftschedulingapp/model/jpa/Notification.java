@@ -31,7 +31,6 @@ public class Notification {
 
   @NotNull
   @ManyToOne(optional = false)
-  @ColumnDefault("nextval('notifications_user_id_seq')")
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 

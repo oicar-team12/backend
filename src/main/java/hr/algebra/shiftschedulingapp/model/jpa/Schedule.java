@@ -28,13 +28,11 @@ public class Schedule {
 
   @NotNull
   @ManyToOne(optional = false)
-  @ColumnDefault("nextval('schedules_shift_id_seq')")
   @JoinColumn(name = "shift_id", nullable = false)
   private Shift shift;
 
   @NotNull
   @ManyToOne(optional = false)
-  @ColumnDefault("nextval('schedules_user_id_seq')")
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 }

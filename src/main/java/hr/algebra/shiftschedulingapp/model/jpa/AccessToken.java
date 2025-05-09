@@ -33,7 +33,6 @@ public class AccessToken {
 
   @NotNull
   @ManyToOne(optional = false)
-  @ColumnDefault("nextval('access_tokens_user_id_seq')")
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 

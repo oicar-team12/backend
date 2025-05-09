@@ -31,7 +31,6 @@ public class Shift {
 
   @NotNull
   @ManyToOne(optional = false)
-  @ColumnDefault("nextval('shifts_group_id_seq')")
   @JoinColumn(name = "group_id", nullable = false)
   private Group group;
 
