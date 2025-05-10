@@ -8,7 +8,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -20,6 +22,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "shifts")
 public class Shift {
 
@@ -45,4 +49,11 @@ public class Shift {
   @NotNull
   @Column(name = "end_time", nullable = false)
   private LocalTime endTime;
+
+  public Shift(Group group, LocalDate date, LocalTime startTime, LocalTime endTime) {
+    this.group = group;
+    this.date = date;
+    this.startTime = startTime;
+    this.endTime = endTime;
+  }
 }

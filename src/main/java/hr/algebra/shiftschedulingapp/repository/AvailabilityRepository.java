@@ -13,9 +13,9 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
 
   @Query("""
     SELECT new hr.algebra.shiftschedulingapp.model.dto.AvailabilityDto(a.date, a.isAvailable)
-        FROM Availability a
-            WHERE a.group.id = :groupId
-                AND a.user.id = :userId
+    FROM Availability a
+    WHERE a.group.id = :groupId
+        AND a.user.id = :userId
     """)
   List<AvailabilityDto> findByGroupIdAndUserId(@Param("groupId") Long groupId, @Param("userId") Long userId);
 
