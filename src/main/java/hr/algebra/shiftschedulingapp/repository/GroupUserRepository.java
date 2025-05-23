@@ -14,7 +14,7 @@ public interface GroupUserRepository extends JpaRepository<GroupUser, Long> {
 
   @Query("""
     SELECT new hr.algebra.shiftschedulingapp.model.dto.GroupUserDto(
-        gu.user.firstName, gu.user.lastName, gu.user.email, gu.role
+        gu.user.id, gu.user.firstName, gu.user.lastName, gu.user.email, gu.role
     )
     FROM GroupUser gu
     WHERE gu.group.id = :groupId
@@ -30,4 +30,9 @@ public interface GroupUserRepository extends JpaRepository<GroupUser, Long> {
   boolean existsByGroup_IdAndUser_IdAndRole(Long groupId, Long userId, GroupUserRole role);
 
   void deleteByGroup_IdAndUser_Id(Long groupId, Long userId);
+
+  void deleteByUserId(Long userId);
+
+  @Query("SELECT gu.role FROM GroupUser gu WHERE gu.group.id = :groupId AND gu.user.id = :userId")
+  GroupUserRole getRoleByGroupIdAndUserId(@Param("groupId") Long groupId, @Param("userId") Long userId);
 }

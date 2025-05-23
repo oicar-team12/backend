@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static hr.algebra.shiftschedulingapp.util.AuthUtil.getCurrentUserAccessToken;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
 @Service
@@ -49,8 +50,8 @@ public class AuthService {
     return new GenericAuthDto(accessTokenService.generateToken(user));
   }
 
-  public void logout(GenericAuthDto logoutRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-    accessTokenService.revokeToken(logoutRequest.getAccessToken());
+  public void logout(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+    accessTokenService.revokeToken(getCurrentUserAccessToken());
     refreshTokenService.revokeTokenAndRemoveCookie(servletRequest, servletResponse);
     getContext().setAuthentication(null);
   }

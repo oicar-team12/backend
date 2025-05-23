@@ -39,7 +39,7 @@ public class ShiftController {
 
   @PutMapping("shift/{id}")
   @RequiresGroupManagerRole
-  public void updateShift(@PathVariable Long groupId, @PathVariable Long id, @RequestBody ShiftDto shiftDto) {
+  public void modifyShift(@PathVariable Long groupId, @PathVariable Long id, @RequestBody ShiftDto shiftDto) {
     shiftService.modifyShift(groupId, id, shiftDto);
   }
 

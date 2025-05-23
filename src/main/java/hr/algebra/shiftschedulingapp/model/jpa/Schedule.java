@@ -8,7 +8,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -17,6 +19,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "schedules")
 public class Schedule {
 
@@ -35,4 +39,9 @@ public class Schedule {
   @ManyToOne(optional = false)
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
+
+  public Schedule(Shift shift, User user) {
+    this.shift = shift;
+    this.user = user;
+  }
 }

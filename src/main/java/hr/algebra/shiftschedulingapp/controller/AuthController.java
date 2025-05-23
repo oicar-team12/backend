@@ -32,8 +32,8 @@ public class AuthController {
   }
 
   @DeleteMapping("logout")
-  public void logout(@RequestBody @Valid GenericAuthDto logoutRequest, HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-    authService.logout(logoutRequest, servletRequest, servletResponse);
+  public void logout(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+    authService.logout(servletRequest, servletResponse);
   }
 
   @PostMapping("register")

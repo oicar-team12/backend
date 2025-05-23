@@ -5,15 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShiftDto {
+public class AvailabilityCriteriaDto {
 
-  private Long id;
-  private LocalDate date;
-  private LocalTime startTime;
-  private LocalTime endTime;
+  private Long userId;
+  private LocalDate startDate;
+  private LocalDate endDate;
 }

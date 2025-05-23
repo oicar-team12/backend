@@ -14,7 +14,7 @@ public interface ShiftRepository extends JpaRepository<Shift, Long> {
 
   @Query("""
     SELECT new hr.algebra.shiftschedulingapp.model.dto.ShiftDto(
-        s.date, s.startTime, s.endTime
+        s.id, s.date, s.startTime, s.endTime
     )
     FROM Shift s
     WHERE s.group.id = :groupId

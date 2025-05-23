@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GroupUserDto {
 
+  private Long id;
   private String firstName;
   private String lastName;
   private String email;

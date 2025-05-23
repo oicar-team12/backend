@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class AvailabilityDto {
 
+  private Long id;
   private LocalDate date;
   private boolean available;
 }

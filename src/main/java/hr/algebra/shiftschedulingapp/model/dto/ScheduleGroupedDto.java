@@ -4,16 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShiftDto {
+public class ScheduleGroupedDto {
 
-  private Long id;
-  private LocalDate date;
-  private LocalTime startTime;
-  private LocalTime endTime;
+  private ShiftDto shift;
+  private List<UserDto> users;
 }
