@@ -35,12 +35,12 @@ public class ShiftService {
     ));
   }
 
-  public void modifyShift(Long groupId, Long id, ShiftDto shiftDto) {
-    validateShiftExistence(groupId, id);
+  public void modifyShift(Long groupId, ShiftDto shiftDto) {
+    validateShiftExistence(groupId, shiftDto.getId());
     validateShiftDuplication(groupId, shiftDto);
 
     shiftRepository.save(new Shift(
-      id,
+      shiftDto.getId(),
       groupRepository.getReferenceById(groupId),
       shiftDto.getDate(),
       shiftDto.getStartTime(),

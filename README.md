@@ -26,3 +26,11 @@ JWT_SECRET=5eb2a801c9msh9fa39b1fc78692fp118655jsn959cd091155d
 
 * To rebuild the image after changing the code, add `--build` flag to the end of the compose command
 * To remove leftover stale containers and volumes after making changes and encountering issues, use `docker-compose down -v`
+
+## API Documentation
+
+Once the application is running locally, visit http://localhost:8080/swagger-ui.html to see the documentation for all
+APIs in Swagger (OpenAPI Specification v3).
+
+You may also see the OpenAPI specification as JSON at http://localhost:8080/v3/api-docs  
+or download it as a YAML file from http://localhost:8080/v3/api-docs.yaml
