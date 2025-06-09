@@ -15,4 +15,8 @@ public interface AccessTokenRepository extends JpaRepository<AccessToken, Long> 
   void deleteByUserId(Long userId);
 
   void deleteByToken(String token);
+
+  int countByUser_Id(Long userId);
+
+  int countByToken(String token);
 }
