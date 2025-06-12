@@ -1,5 +1,6 @@
 package hr.algebra.shiftschedulingapp.service;
 
+import hr.algebra.shiftschedulingapp.helper.Clock;
 import hr.algebra.shiftschedulingapp.model.jpa.AccessToken;
 import hr.algebra.shiftschedulingapp.model.jpa.User;
 import io.jsonwebtoken.Claims;
@@ -22,21 +23,26 @@ import static java.lang.System.currentTimeMillis;
 @Service
 public class JwtTokenService {
 
-  @Value("${jwt.secret}")
-  private String jwtSecret;
+  private final String jwtSecret;
+  private final Clock clock;
+
+  public JwtTokenService(Clock clock, @Value("${jwt.secret}") String jwtSecret) {
+    this.clock = clock;
+    this.jwtSecret = jwtSecret;
+  }
 
   public String generateToken(User user) {
     return Jwts.builder()
       .claims(generateTokenClaims(user))
       .subject(user.getEmail())
-      .issuedAt(new Date())
-      .expiration(new Date(currentTimeMillis() + ACCESS_TOKEN_EXPIRES_IN_MILLISECONDS))
+      .issuedAt(clock.getDate())
+      .expiration(clock.getDate(currentTimeMillis() + ACCESS_TOKEN_EXPIRES_IN_MILLISECONDS))
       .signWith(getSignKey())
       .compact();
   }
 
   public boolean isTokenValid(AccessToken accessToken) {
-    return extractExpiration(accessToken.getToken()).after(new Date());
+    return extractExpiration(accessToken.getToken()).after(clock.getDate());
   }
 
   public Long extractUserId(String token) {

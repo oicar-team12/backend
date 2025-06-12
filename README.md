@@ -34,3 +34,7 @@ APIs in Swagger (OpenAPI Specification v3).
 
 You may also see the OpenAPI specification as JSON at http://localhost:8080/v3/api-docs  
 or download it as a YAML file from http://localhost:8080/v3/api-docs.yaml
+
+## Running tests
+
+To run both unit and integration tests, use `mvn test` while in the root directory of the project

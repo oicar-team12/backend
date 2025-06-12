@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.ColumnDefault;
@@ -22,6 +23,7 @@ import static java.lang.Integer.MAX_VALUE;
 @Setter
 @Entity
 @Accessors(chain = true)
+@NoArgsConstructor
 @Table(name = "access_tokens")
 public class AccessToken {
 
@@ -44,4 +46,8 @@ public class AccessToken {
   @ColumnDefault("CURRENT_TIMESTAMP")
   @Column(name = "expires_at", nullable = false)
   private OffsetDateTime expiresAt;
+
+  public AccessToken(String token) {
+    this.token = token;
+  }
 }
