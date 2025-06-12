@@ -52,4 +52,8 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
   boolean existsByShift_IdAndUser_Id(Long shiftId, Long userId);
 
   boolean existsByShift_GroupId_AndId(Long shiftGroupId, Long id);
+
+  int countByUser_Id(Long userId);
+
+  Schedule getFirstByUser_Id(Long userId);
 }

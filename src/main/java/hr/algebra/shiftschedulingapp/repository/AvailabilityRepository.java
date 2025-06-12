@@ -30,7 +30,7 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
         AND (CAST(:endDate AS DATE) IS NULL OR a.date <= :endDate)
     GROUP BY u.id, u.first_name, u.last_name
     """, nativeQuery = true)
-  List<AvailabilityProjection> findByGroupIdAndUserId(
+  List<AvailabilityProjection> findByCriteria(
     @Param("groupId") Long groupId,
     @Param("userId") Long userId,
     @Param("startDate") LocalDate startDate,
@@ -40,4 +40,8 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
   boolean existsByGroup_IdAndUser_IdAndDate(Long groupId, Long userId, LocalDate date);
 
   boolean existsByIdAndGroup_IdAndUser_Id(Long id, Long groupId, Long userId);
+
+  int countByUser_Id(Long userId);
+
+  Availability getFirstByUser_Id(Long userId);
 }

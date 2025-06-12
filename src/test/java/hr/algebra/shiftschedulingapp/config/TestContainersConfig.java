@@ -1,4 +1,4 @@
-package hr.algebra.shiftschedulingapp;
+package hr.algebra.shiftschedulingapp.config;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -8,11 +8,13 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import javax.sql.DataSource;
 
 @TestConfiguration
+@SuppressWarnings("resource")
 public class TestContainersConfig {
 
-  static PostgreSQLContainer<? extends PostgreSQLContainer<?>> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
+  private static final PostgreSQLContainer<?> postgres;
 
   static {
+    postgres = new PostgreSQLContainer<>("postgres:16-alpine").withReuse(true);
     postgres.start();
   }
 

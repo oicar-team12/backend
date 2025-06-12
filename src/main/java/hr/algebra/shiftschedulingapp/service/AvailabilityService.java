@@ -39,7 +39,7 @@ public class AvailabilityService {
   public List<AvailabilityGroupedDto> getAvailabilities(Long groupId, AvailabilityCriteriaDto availabilityCriteriaDto) {
     validateAvailabilityViewership(groupId, availabilityCriteriaDto);
 
-    List<AvailabilityProjection> projections = availabilityRepository.findByGroupIdAndUserId(groupId, availabilityCriteriaDto.getUserId(), availabilityCriteriaDto.getStartDate(), availabilityCriteriaDto.getEndDate());
+    List<AvailabilityProjection> projections = availabilityRepository.findByCriteria(groupId, availabilityCriteriaDto.getUserId(), availabilityCriteriaDto.getStartDate(), availabilityCriteriaDto.getEndDate());
 
     return projections.stream()
       .map(this::convertToGroupedDto)

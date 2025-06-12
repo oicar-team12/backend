@@ -10,15 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static hr.algebra.shiftschedulingapp.util.AuthUtil.getCurrentUser;
-
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class UserService implements UserDetailsService {
 
   private final UserRepository userRepository;
@@ -35,9 +31,7 @@ public class UserService implements UserDetailsService {
     return userRepository.findById(id);
   }
 
-  public void deleteUser() {
-    Long userId = getCurrentUser().getId();
-
+  public void deleteUser(Long userId) {
     groupUserRepository.deleteByUserId(userId);
     notificationRepository.deleteByUserId(userId);
     userRepository.deleteUser(userId);

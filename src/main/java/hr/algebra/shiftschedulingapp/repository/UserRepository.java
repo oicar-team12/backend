@@ -20,6 +20,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
         u.password = "$2a$10$invalidhashxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     WHERE u.id = :userId
     """)
-  @Modifying
+  @Modifying(flushAutomatically = true, clearAutomatically = true)
   void deleteUser(@Param("userId") Long id);
+
+  int countByEmail(String email);
 }

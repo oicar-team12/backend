@@ -22,7 +22,7 @@ public interface GroupUserRepository extends JpaRepository<GroupUser, Long> {
   List<GroupUserDto> findByGroupId(@Param("groupId") Long groupId);
 
   @Query("UPDATE GroupUser gu SET gu.role = :role WHERE gu.group.id = :groupId AND gu.user.id = :userId")
-  @Modifying
+  @Modifying(flushAutomatically = true, clearAutomatically = true)
   void updateRoleByGroupIdAndUserId(@Param("role") GroupUserRole role, @Param("groupId") Long groupId, @Param("userId") Long userId);
 
   boolean existsByGroup_IdAndUser_Id(Long groupId, Long userId);
@@ -35,4 +35,10 @@ public interface GroupUserRepository extends JpaRepository<GroupUser, Long> {
 
   @Query("SELECT gu.role FROM GroupUser gu WHERE gu.group.id = :groupId AND gu.user.id = :userId")
   GroupUserRole getRoleByGroupIdAndUserId(@Param("groupId") Long groupId, @Param("userId") Long userId);
+
+  int countByUser_Id(Long userId);
+
+  int countByGroup_Id(Long groupId);
+
+  GroupUser findByUser_Id(Long userId);
 }

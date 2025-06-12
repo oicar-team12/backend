@@ -29,4 +29,9 @@ public class AvailabilityDto {
     example = "true"
   )
   private boolean available;
+
+  public AvailabilityDto(LocalDate date, boolean available) {
+    this.date = date;
+    this.available = available;
+  }
 }

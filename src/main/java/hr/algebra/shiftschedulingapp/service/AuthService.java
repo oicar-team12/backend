@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static hr.algebra.shiftschedulingapp.util.AuthUtil.getCurrentUser;
 import static hr.algebra.shiftschedulingapp.util.AuthUtil.getCurrentUserAccessToken;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -28,6 +29,7 @@ public class AuthService {
   private final AuthenticationManager authenticationManager;
   private final RefreshTokenService refreshTokenService;
   private final AccessTokenService accessTokenService;
+  private final UserService userService;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
@@ -68,5 +70,12 @@ public class AuthService {
       .setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
     userRepository.save(user);
+  }
+
+  public void deleteUserAndLogout(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+    Long userId = getCurrentUser().getId();
+
+    logout(servletRequest, servletResponse);
+    userService.deleteUser(userId);
   }
 }

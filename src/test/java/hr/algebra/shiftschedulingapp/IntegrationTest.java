@@ -1,7 +1,10 @@
 package hr.algebra.shiftschedulingapp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hr.algebra.shiftschedulingapp.config.MockMvcConfig;
+import hr.algebra.shiftschedulingapp.config.TestContainersConfig;
 import hr.algebra.shiftschedulingapp.model.dto.GenericAuthDto;
 import hr.algebra.shiftschedulingapp.model.dto.LoginRequestDto;
 import hr.algebra.shiftschedulingapp.util.Credentials;
@@ -19,21 +22,14 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.IOException;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-@Import(TestContainersConfig.class)
+@Import({TestContainersConfig.class, MockMvcConfig.class})
 @TestMethodOrder(OrderAnnotation.class)
 public abstract class IntegrationTest {
-
-  protected static final String LOGIN_EMAIL = "john@email.com";
-  protected static final String LOGIN_PASSWORD = "asd123456";
-
-  private static final String LOGIN_PATH = "/auth/login";
-  private static final String REFRESH_TOKEN_COOKIE_NAME = "refreshToken";
 
   @Autowired
   protected MockMvc mockMvc;
@@ -41,14 +37,30 @@ public abstract class IntegrationTest {
   @Autowired
   protected ObjectMapper objectMapper;
 
+  protected static final String LOGIN_EMAIL = "john@email.com";
+  protected static final String LOGIN_PASSWORD = "asd123456";
+  protected static final String BEARER_PREFIX = "Bearer ";
+  protected static final String REFRESH_TOKEN_COOKIE_NAME = "refreshToken";
+  protected static final Long GROUP_1 = 1L;
+  protected static final Long GROUP_2 = 2L;
+  protected static final Long USER_1 = 1L;
+  protected static final Long USER_2 = 2L;
+  protected static final Long USER_3 = 3L;
+  protected static final Long USER_4 = 4L;
+
+  private static final String LOGIN_PATH = "/auth/login";
+
   protected Credentials login() throws Exception {
-    return extractTokens(performLogin(LOGIN_PASSWORD).andReturn());
+    return extractTokens(performLogin(LOGIN_EMAIL, LOGIN_PASSWORD).andReturn());
   }
 
-  protected ResultActions performLogin(String password) throws Exception {
+  protected Credentials login(String email) throws Exception {
+    return extractTokens(performLogin(email, LOGIN_PASSWORD).andReturn());
+  }
+
+  protected ResultActions performLogin(String email, String password) throws Exception {
     return mockMvc.perform(post(LOGIN_PATH)
-      .contentType(APPLICATION_JSON)
-      .content(asJsonString(new LoginRequestDto(LOGIN_EMAIL, password))));
+      .content(asJsonString(new LoginRequestDto(email, password))));
   }
 
   protected Credentials extractTokens(MvcResult result) throws Exception {
@@ -69,5 +81,9 @@ public abstract class IntegrationTest {
 
   protected <T> T fromJsonString(String json, Class<T> clazz) throws IOException {
     return objectMapper.readValue(json, clazz);
+  }
+
+  protected <T> T fromJsonString(String json, TypeReference<T> typeReference) throws IOException {
+    return objectMapper.readValue(json, typeReference);
   }
 }
