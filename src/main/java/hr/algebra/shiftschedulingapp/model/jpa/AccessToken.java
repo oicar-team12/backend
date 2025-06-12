@@ -1,6 +1,8 @@
 package hr.algebra.shiftschedulingapp.model.jpa;
 
+import hr.algebra.shiftschedulingapp.converter.CryptoConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -39,6 +41,7 @@ public class AccessToken {
   private User user;
 
   @NotNull
+  @Convert(converter = CryptoConverter.class)
   @Column(name = "token", nullable = false, length = MAX_VALUE)
   private String token;
 

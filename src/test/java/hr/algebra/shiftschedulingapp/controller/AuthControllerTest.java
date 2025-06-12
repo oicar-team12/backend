@@ -13,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.UUID;
-
+import static java.util.UUID.randomUUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -108,13 +107,13 @@ class AuthControllerTest extends IntegrationTest {
     Credentials responseCredentials = extractTokens(result);
 
     assertEquals(1, accessTokenRepository.countByToken(responseCredentials.getAccessToken()));
-    assertEquals(1, refreshTokenRepository.countByToken(UUID.fromString(initialCredentials.getRefreshToken())));
+    assertEquals(1, refreshTokenRepository.countByToken(initialCredentials.getRefreshToken()));
   }
 
   @Test
   void refresh_invalidCredentials_unauthorized() throws Exception {
     Credentials initialCredentials = login();
-    String invalidRefreshToken = UUID.randomUUID().toString();
+    String invalidRefreshToken = randomUUID().toString();
 
     mockMvc.perform(post(REFRESH_PATH)
         .cookie(new Cookie(REFRESH_TOKEN_COOKIE_NAME, invalidRefreshToken)))
@@ -128,8 +127,8 @@ class AuthControllerTest extends IntegrationTest {
     assertEquals(1, refreshTokenRepository.countByUser_Id(userId));
 
     assertEquals(1, accessTokenRepository.countByToken(initialCredentials.getAccessToken()));
-    assertEquals(1, refreshTokenRepository.countByToken(UUID.fromString(initialCredentials.getRefreshToken())));
-    assertEquals(0, refreshTokenRepository.countByToken(UUID.fromString(invalidRefreshToken)));
+    assertEquals(1, refreshTokenRepository.countByToken(initialCredentials.getRefreshToken()));
+    assertEquals(0, refreshTokenRepository.countByToken(invalidRefreshToken));
   }
 
   @Test
@@ -153,7 +152,7 @@ class AuthControllerTest extends IntegrationTest {
     login();
 
     mockMvc.perform(delete(LOGOUT_PATH)
-        .cookie(new Cookie(REFRESH_TOKEN_COOKIE_NAME, UUID.randomUUID().toString())))
+        .cookie(new Cookie(REFRESH_TOKEN_COOKIE_NAME, randomUUID().toString())))
       .andExpect(status().isBadRequest())
       .andReturn();
 

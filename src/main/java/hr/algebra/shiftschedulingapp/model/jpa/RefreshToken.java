@@ -1,6 +1,8 @@
 package hr.algebra.shiftschedulingapp.model.jpa;
 
+import hr.algebra.shiftschedulingapp.converter.CryptoConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,7 +16,6 @@ import lombok.experimental.Accessors;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -37,8 +38,9 @@ public class RefreshToken {
   private User user;
 
   @NotNull
+  @Convert(converter = CryptoConverter.class)
   @Column(name = "token", nullable = false)
-  private UUID token;
+  private String token;
 
   @NotNull
   @ColumnDefault("CURRENT_TIMESTAMP")

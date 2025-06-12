@@ -1,6 +1,8 @@
 package hr.algebra.shiftschedulingapp.model.jpa;
 
+import hr.algebra.shiftschedulingapp.converter.CryptoConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -34,15 +36,18 @@ public class User implements UserDetails {
   private Long id;
 
   @NotNull
+  @Convert(converter = CryptoConverter.class)
   @Column(name = "first_name", nullable = false, length = MAX_VALUE)
   private String firstName;
 
   @NotNull
+  @Convert(converter = CryptoConverter.class)
   @Column(name = "last_name", nullable = false, length = MAX_VALUE)
   private String lastName;
 
   @Size(max = 255)
   @NotNull
+  @Convert(converter = CryptoConverter.class)
   @Column(name = "email", nullable = false)
   private String email;
 

@@ -13,8 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import java.util.UUID;
-
+import static java.util.UUID.randomUUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
@@ -75,7 +74,7 @@ class UserControllerTest extends IntegrationTest {
 
     mockMvc.perform(delete(DELETE_USER_PATH)
         .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken())
-        .cookie(new Cookie(REFRESH_TOKEN_COOKIE_NAME, UUID.randomUUID().toString())))
+        .cookie(new Cookie(REFRESH_TOKEN_COOKIE_NAME, randomUUID().toString())))
       .andExpect(status().isBadRequest())
       .andReturn();
 

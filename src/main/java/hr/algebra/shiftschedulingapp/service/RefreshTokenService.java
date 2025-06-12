@@ -11,8 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 import static hr.algebra.shiftschedulingapp.constant.AuthConstants.COOKIE_HEADER_NAME;
 import static hr.algebra.shiftschedulingapp.constant.AuthConstants.REFRESH_TOKEN_COOKIE_NAME;
 import static hr.algebra.shiftschedulingapp.constant.AuthConstants.REFRESH_TOKEN_EXPIRES_IN_SECONDS;
@@ -54,18 +52,18 @@ public class RefreshTokenService {
     removeCookie(servletResponse);
   }
 
-  private UUID generateToken(User user) {
+  private String generateToken(User user) {
     refreshTokenRepository.deleteByUserId(user.getId());
 
     RefreshToken refreshToken = new RefreshToken()
-      .setToken(randomUUID())
+      .setToken(randomUUID().toString())
       .setExpiresAt(now().plusSeconds(REFRESH_TOKEN_EXPIRES_IN_SECONDS))
       .setUser(user);
 
     return refreshTokenRepository.save(refreshToken).getToken();
   }
 
-  private void createCookie(UUID token, HttpServletResponse servletResponse) {
+  private void createCookie(String token, HttpServletResponse servletResponse) {
     String cookie = format(
       "%s=%s; Max-Age=%d; SameSite=Strict; HttpOnly; Secure; Path=/",
       REFRESH_TOKEN_COOKIE_NAME, token, REFRESH_TOKEN_EXPIRES_IN_SECONDS
@@ -81,7 +79,7 @@ public class RefreshTokenService {
     response.addHeader(COOKIE_HEADER_NAME, cookie);
   }
 
-  private UUID getRefreshToken(HttpServletRequest servletRequest) {
+  private String getRefreshToken(HttpServletRequest servletRequest) {
     if (servletRequest.getCookies() == null) {
       return null;
     }
@@ -90,6 +88,6 @@ public class RefreshTokenService {
       .filter(cookie -> cookie.getName().equals(REFRESH_TOKEN_COOKIE_NAME))
       .findFirst().orElseThrow(UnauthorizedException::new);
 
-    return UUID.fromString(tokenCookie.getValue());
+    return tokenCookie.getValue();
   }
 }
