@@ -26,7 +26,10 @@ public class JwtTokenService {
   private final String jwtSecret;
   private final Clock clock;
 
-  public JwtTokenService(Clock clock, @Value("${jwt.secret}") String jwtSecret) {
+  public JwtTokenService(
+    Clock clock,
+    @Value("${jwt.secret}") String jwtSecret
+  ) {
     this.clock = clock;
     this.jwtSecret = jwtSecret;
   }
