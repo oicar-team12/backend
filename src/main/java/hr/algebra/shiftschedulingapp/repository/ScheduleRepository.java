@@ -56,4 +56,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
   int countByUserId(Long userId);
 
   Schedule getFirstByUserId(Long userId);
+
+  void deleteByShiftGroupId(Long shiftGroupId);
 }

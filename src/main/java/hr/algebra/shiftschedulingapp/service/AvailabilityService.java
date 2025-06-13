@@ -69,6 +69,10 @@ public class AvailabilityService {
     availabilityRepository.deleteById(id);
   }
 
+  public void removeByGroupId(Long groupId) {
+    availabilityRepository.deleteByGroupId(groupId);
+  }
+
   private void validateAvailabilityViewership(Long groupId, AvailabilityCriteriaDto availabilityCriteriaDto) {
     Long userId = getCurrentUser().getId();
     if (!groupUserRepository.getRoleByGroupIdAndUserId(groupId, userId).equals(MANAGER)) {

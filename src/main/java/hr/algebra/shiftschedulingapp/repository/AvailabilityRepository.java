@@ -44,4 +44,6 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
   int countByUserId(Long userId);
 
   Availability getFirstByUserId(Long userId);
+
+  void deleteByGroupId(Long groupId);
 }

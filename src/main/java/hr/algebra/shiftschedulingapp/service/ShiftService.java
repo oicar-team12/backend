@@ -53,6 +53,10 @@ public class ShiftService {
     shiftRepository.deleteById(id);
   }
 
+  public void removeByGroupId(Long groupId) {
+    shiftRepository.deleteByGroupId(groupId);
+  }
+
   private void validateShiftDuplication(Long groupId, ShiftDto shiftDto) {
     if (shiftRepository.existsByGroupIdAndDateAndStartTimeAndEndTime(groupId, shiftDto.getDate(), shiftDto.getStartTime(), shiftDto.getEndTime())) {
       throw new RestException("A shift on this date with the same start and end time already exists in this group");

@@ -64,6 +64,10 @@ public class ScheduleService {
     scheduleRepository.deleteById(id);
   }
 
+  public void removeByGroupId(Long groupId) {
+    scheduleRepository.deleteByShiftGroupId(groupId);
+  }
+
   private void validateScheduleViewership(Long groupId, ScheduleCriteriaDto scheduleCriteriaDto) {
     Long userId = getCurrentUser().getId();
     if (!groupUserRepository.getRoleByGroupIdAndUserId(groupId, getCurrentUser().getId()).equals(MANAGER)) {

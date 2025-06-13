@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static hr.algebra.shiftschedulingapp.enums.GroupUserRole.EMPLOYEE;
 import static io.swagger.v3.oas.annotations.enums.ParameterIn.PATH;
 
 @RestController
@@ -100,7 +101,7 @@ public class GroupUserController {
   @PostMapping("user/{userId}")
   @RequiresGroupManagerRole
   public void addUserToGroup(@PathVariable Long groupId, @PathVariable Long userId) {
-    groupUserService.addUserToGroup(groupId, userId);
+    groupUserService.addUserToGroup(groupId, userId, EMPLOYEE);
   }
 
   @Operation(

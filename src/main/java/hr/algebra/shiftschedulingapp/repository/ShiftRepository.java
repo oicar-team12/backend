@@ -35,4 +35,6 @@ public interface ShiftRepository extends JpaRepository<Shift, Long> {
   int countByGroupId(Long groupId);
 
   Shift getFirstByGroupId(Long groupId);
+
+  void deleteByGroupId(Long groupId);
 }

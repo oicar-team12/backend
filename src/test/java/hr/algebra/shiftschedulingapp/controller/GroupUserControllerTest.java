@@ -129,8 +129,8 @@ class GroupUserControllerTest extends IntegrationTest {
       .andExpect(status().isOk())
       .andReturn();
 
-    GroupUser modifiedGroupUser = groupUserRepository.findByUserId(USER_2);
-    assertEquals(MANAGER, modifiedGroupUser.getRole());
+    List<GroupUser> modifiedGroupUser = groupUserRepository.findByUserId(USER_2);
+    assertEquals(MANAGER, modifiedGroupUser.getFirst().getRole());
   }
 
   @Test

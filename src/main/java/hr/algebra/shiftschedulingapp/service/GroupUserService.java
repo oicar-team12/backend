@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static hr.algebra.shiftschedulingapp.enums.GroupUserRole.EMPLOYEE;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -28,13 +26,13 @@ public class GroupUserService {
     return groupUserRepository.findByGroupId(groupId);
   }
 
-  public void addUserToGroup(Long groupId, Long userId) {
+  public void addUserToGroup(Long groupId, Long userId, GroupUserRole role) {
     validateUserExistence(userId, groupId);
 
     groupUserRepository.save(new GroupUser(
       userRepository.getReferenceById(userId),
       groupRepository.getReferenceById(groupId),
-      EMPLOYEE
+      role
     ));
   }
 
@@ -46,6 +44,10 @@ public class GroupUserService {
   public void removeUserFromGroup(Long groupId, Long userId) {
     validateGroupMembership(groupId, userId);
     groupUserRepository.deleteByGroupIdAndUserId(groupId, userId);
+  }
+
+  public void removeByGroupId(Long groupId) {
+    groupUserRepository.deleteByGroupId(groupId);
   }
 
   private void validateUserExistence(Long userId, Long groupId) {
