@@ -26,11 +26,11 @@ public class GroupUserService {
     return groupUserRepository.findByGroupId(groupId);
   }
 
-  public void addUserToGroup(Long groupId, Long userId, GroupUserRole role) {
-    validateUserExistence(userId, groupId);
+  public void addUserToGroup(Long groupId, String email, GroupUserRole role) {
+    validateUserExistence(email, groupId);
 
     groupUserRepository.save(new GroupUser(
-      userRepository.getReferenceById(userId),
+      userRepository.getReferenceByEmail(email),
       groupRepository.getReferenceById(groupId),
       role
     ));
@@ -50,12 +50,12 @@ public class GroupUserService {
     groupUserRepository.deleteByGroupId(groupId);
   }
 
-  private void validateUserExistence(Long userId, Long groupId) {
-    if (!userRepository.existsById(userId)) {
+  private void validateUserExistence(String email, Long groupId) {
+    if (!userRepository.existsByEmail(email)) {
       throw new RestException("User not found");
     }
 
-    if (groupUserRepository.existsByGroupIdAndUserId(groupId, userId)) {
+    if (groupUserRepository.existsByGroupIdAndUserEmail(groupId, email)) {
       throw new RestException("User already exists in group");
     }
   }

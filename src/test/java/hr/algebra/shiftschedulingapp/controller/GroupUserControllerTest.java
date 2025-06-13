@@ -2,6 +2,7 @@ package hr.algebra.shiftschedulingapp.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import hr.algebra.shiftschedulingapp.IntegrationTest;
+import hr.algebra.shiftschedulingapp.model.dto.EmailDto;
 import hr.algebra.shiftschedulingapp.model.dto.GroupUserDto;
 import hr.algebra.shiftschedulingapp.model.jpa.GroupUser;
 import hr.algebra.shiftschedulingapp.repository.GroupUserRepository;
@@ -35,11 +36,14 @@ class GroupUserControllerTest extends IntegrationTest {
   private GroupUserRepository groupUserRepository;
 
   private static final String GROUP_USERS_PATH = "/group/%s/users";
-  private static final String GROUP_USER_PATH = "/group/%s/user/%s";
+  private static final String GROUP_USER_PATH = "/group/%s/user";
+  private static final String GROUP_USER_WITH_ID_PATH = "/group/%s/user/%s";
   private static final String GROUP_USER_ROLE_PATH = "/group/%s/user/%s/role/%s";
 
   private static final String MANAGER_EMAIL = "john@email.com";
   private static final String EMPLOYEE_EMAIL = "james@email.com";
+  private static final String TERTIARY_EMAIL = "jane@email.com";
+  private static final String NONEXISTENT_EMAIL = "none@email.com";
 
   private static final String ERROR_DUPLICATE = "User already exists in group";
   private static final String ERROR_USER_NOT_FOUND = "User not found";
@@ -74,8 +78,9 @@ class GroupUserControllerTest extends IntegrationTest {
   void addUserToGroup_validData_ok() throws Exception {
     Credentials credentials = login(MANAGER_EMAIL);
 
-    mockMvc.perform(post(format(GROUP_USER_PATH, GROUP_1, USER_3))
-        .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken()))
+    mockMvc.perform(post(format(GROUP_USER_PATH, GROUP_1))
+        .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken())
+        .content(asJsonString(new EmailDto(TERTIARY_EMAIL))))
       .andExpect(status().isOk())
       .andReturn();
 
@@ -86,8 +91,9 @@ class GroupUserControllerTest extends IntegrationTest {
   void addUserToGroup_userNotFound_badRequest() throws Exception {
     Credentials credentials = login(MANAGER_EMAIL);
 
-    mockMvc.perform(post(format(GROUP_USER_PATH, GROUP_1, USER_4))
-        .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken()))
+    mockMvc.perform(post(format(GROUP_USER_PATH, GROUP_1))
+        .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken())
+        .content(asJsonString(new EmailDto(NONEXISTENT_EMAIL))))
       .andExpect(status().isBadRequest())
       .andExpect(jsonPath("$.message").value(ERROR_USER_NOT_FOUND))
       .andReturn();
@@ -99,8 +105,9 @@ class GroupUserControllerTest extends IntegrationTest {
   void addUserToGroup_userAlreadyInGroup_badRequest() throws Exception {
     Credentials credentials = login(MANAGER_EMAIL);
 
-    mockMvc.perform(post(format(GROUP_USER_PATH, GROUP_1, USER_2))
-        .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken()))
+    mockMvc.perform(post(format(GROUP_USER_PATH, GROUP_1))
+        .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken())
+        .content(asJsonString(new EmailDto(EMPLOYEE_EMAIL))))
       .andExpect(status().isBadRequest())
       .andExpect(jsonPath("$.message").value(ERROR_DUPLICATE))
       .andReturn();
@@ -112,8 +119,9 @@ class GroupUserControllerTest extends IntegrationTest {
   void addUserToGroup_userIsNotManager_forbidden() throws Exception {
     Credentials credentials = login(EMPLOYEE_EMAIL);
 
-    mockMvc.perform(post(format(GROUP_USER_PATH, GROUP_1, USER_3))
-        .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken()))
+    mockMvc.perform(post(format(GROUP_USER_PATH, GROUP_1))
+        .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken())
+        .content(asJsonString(new EmailDto(TERTIARY_EMAIL))))
       .andExpect(status().isForbidden())
       .andReturn();
 
@@ -158,7 +166,7 @@ class GroupUserControllerTest extends IntegrationTest {
   void removeUserFromGroup_validData_ok() throws Exception {
     Credentials credentials = login(MANAGER_EMAIL);
 
-    mockMvc.perform(delete(format(GROUP_USER_PATH, GROUP_1, USER_2))
+    mockMvc.perform(delete(format(GROUP_USER_WITH_ID_PATH, GROUP_1, USER_2))
         .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken()))
       .andExpect(status().isOk())
       .andReturn();
@@ -170,7 +178,7 @@ class GroupUserControllerTest extends IntegrationTest {
   void removeUserFromGroup_userNotFound_badRequest() throws Exception {
     Credentials credentials = login(MANAGER_EMAIL);
 
-    mockMvc.perform(delete(format(GROUP_USER_PATH, GROUP_1, USER_4))
+    mockMvc.perform(delete(format(GROUP_USER_WITH_ID_PATH, GROUP_1, USER_4))
         .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken()))
       .andExpect(status().isBadRequest())
       .andExpect(jsonPath("$.message").value(ERROR_USER_NOT_FOUND_IN_GROUP))
@@ -183,7 +191,7 @@ class GroupUserControllerTest extends IntegrationTest {
   void removeUserFromGroup_userIsNotManager_forbidden() throws Exception {
     Credentials credentials = login(EMPLOYEE_EMAIL);
 
-    mockMvc.perform(delete(format(GROUP_USER_PATH, GROUP_1, USER_1))
+    mockMvc.perform(delete(format(GROUP_USER_WITH_ID_PATH, GROUP_1, USER_1))
         .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken()))
       .andExpect(status().isForbidden())
       .andReturn();

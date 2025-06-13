@@ -43,4 +43,6 @@ public interface GroupUserRepository extends JpaRepository<GroupUser, Long> {
   List<GroupUser> findByUserId(Long userId);
 
   void deleteByGroupId(Long groupId);
+
+  boolean existsByGroupIdAndUserEmail(Long groupId, String userEmail);
 }

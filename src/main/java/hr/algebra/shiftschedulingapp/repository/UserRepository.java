@@ -26,4 +26,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
   int countByEmail(String email);
 
   boolean existsByIdAndIsAdminIsTrue(Long id);
+
+  boolean existsByEmail(String email);
+
+  User getReferenceByEmail(String email);
 }

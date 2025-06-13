@@ -3,6 +3,7 @@ package hr.algebra.shiftschedulingapp.controller;
 import hr.algebra.shiftschedulingapp.annotation.RequiresGroupManagerRole;
 import hr.algebra.shiftschedulingapp.annotation.RequiresGroupMembership;
 import hr.algebra.shiftschedulingapp.enums.GroupUserRole;
+import hr.algebra.shiftschedulingapp.model.dto.EmailDto;
 import hr.algebra.shiftschedulingapp.model.dto.GroupUserDto;
 import hr.algebra.shiftschedulingapp.model.dto.RestErrorDto;
 import hr.algebra.shiftschedulingapp.service.GroupUserService;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -77,11 +79,6 @@ public class GroupUserController {
     description = "ID of the group",
     in = PATH
   )
-  @Parameter(
-    name = "userId",
-    description = "ID of the user",
-    in = PATH
-  )
   @ApiResponses(value = {
     @ApiResponse(
       responseCode = "200",
@@ -98,10 +95,10 @@ public class GroupUserController {
       content = @Content(schema = @Schema(implementation = RestErrorDto.class))
     )
   })
-  @PostMapping("user/{userId}")
+  @PostMapping("user")
   @RequiresGroupManagerRole
-  public void addUserToGroup(@PathVariable Long groupId, @PathVariable Long userId) {
-    groupUserService.addUserToGroup(groupId, userId, EMPLOYEE);
+  public void addUserToGroup(@PathVariable Long groupId, @RequestBody EmailDto emailDto) {
+    groupUserService.addUserToGroup(groupId, emailDto.getEmail(), EMPLOYEE);
   }
 
   @Operation(

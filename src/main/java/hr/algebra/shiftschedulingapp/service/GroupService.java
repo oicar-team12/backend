@@ -23,7 +23,7 @@ public class GroupService {
 
   public GroupDto createGroup(GroupDto groupDto) {
     Group group = groupRepository.save(new Group(groupDto.getName()));
-    groupUserService.addUserToGroup(group.getId(), getCurrentUser().getId(), MANAGER);
+    groupUserService.addUserToGroup(group.getId(), getCurrentUser().getEmail(), MANAGER);
     return new GroupDto(group.getId(), group.getName());
   }
 
