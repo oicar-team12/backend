@@ -9,17 +9,21 @@ import hr.algebra.shiftschedulingapp.model.dto.GenericAuthDto;
 import hr.algebra.shiftschedulingapp.model.dto.LoginRequestDto;
 import hr.algebra.shiftschedulingapp.util.Credentials;
 import jakarta.servlet.http.Cookie;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,6 +41,9 @@ public abstract class IntegrationTest {
   @Autowired
   protected ObjectMapper objectMapper;
 
+  @Autowired
+  private DataSource dataSource;
+
   protected static final String LOGIN_EMAIL = "john@email.com";
   protected static final String LOGIN_PASSWORD = "asd123456";
   protected static final String BEARER_PREFIX = "Bearer ";
@@ -49,6 +56,11 @@ public abstract class IntegrationTest {
   protected static final Long USER_4 = 4L;
 
   private static final String LOGIN_PATH = "/auth/login";
+
+  @AfterEach
+  void cleanupDatabase() {
+    new ResourceDatabasePopulator(new ClassPathResource("/sql/cleanup.sql")).execute(dataSource);
+  }
 
   protected Credentials login() throws Exception {
     return extractTokens(performLogin(LOGIN_EMAIL, LOGIN_PASSWORD).andReturn());

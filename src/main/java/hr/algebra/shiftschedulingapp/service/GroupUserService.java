@@ -2,6 +2,7 @@ package hr.algebra.shiftschedulingapp.service;
 
 import hr.algebra.shiftschedulingapp.enums.GroupUserRole;
 import hr.algebra.shiftschedulingapp.exception.RestException;
+import hr.algebra.shiftschedulingapp.model.dto.GroupDto;
 import hr.algebra.shiftschedulingapp.model.dto.GroupUserDto;
 import hr.algebra.shiftschedulingapp.model.jpa.GroupUser;
 import hr.algebra.shiftschedulingapp.repository.GroupRepository;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static hr.algebra.shiftschedulingapp.util.AuthUtil.getCurrentUser;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +51,13 @@ public class GroupUserService {
 
   public void removeByGroupId(Long groupId) {
     groupUserRepository.deleteByGroupId(groupId);
+  }
+
+  public List<GroupDto> getGroupsForCurrentUser() {
+    List<GroupUser> groupUsers = groupUserRepository.findByUserId(getCurrentUser().getId());
+    return groupUsers.stream()
+      .map(gu -> new GroupDto(gu.getGroup().getId(), gu.getGroup().getName()))
+      .toList();
   }
 
   private void validateUserExistence(String email, Long groupId) {
