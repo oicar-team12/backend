@@ -8,8 +8,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Schedule DTO")
-public class ScheduleDto {
+@Schema(description = "'Right to forget' request DTO")
+public class UserDeleteRequestDto {
+
+  @Schema(
+    description = "Request ID",
+    example = "1"
+  )
+  private Long id;
 
   @Schema(
     description = "User ID",
@@ -18,8 +24,8 @@ public class ScheduleDto {
   private Long userId;
 
   @Schema(
-    description = "Shift ID",
-    example = "1"
+    description = "Is approved",
+    example = "true"
   )
-  private Long shiftId;
+  private Boolean isApproved;
 }

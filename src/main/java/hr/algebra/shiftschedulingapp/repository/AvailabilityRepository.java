@@ -37,11 +37,11 @@ public interface AvailabilityRepository extends JpaRepository<Availability, Long
     @Param("endDate") LocalDate endDate
   );
 
-  boolean existsByGroup_IdAndUser_IdAndDate(Long groupId, Long userId, LocalDate date);
+  boolean existsByGroupIdAndUserIdAndDate(Long groupId, Long userId, LocalDate date);
 
-  boolean existsByIdAndGroup_IdAndUser_Id(Long id, Long groupId, Long userId);
+  boolean existsByIdAndGroupIdAndUserId(Long id, Long groupId, Long userId);
 
-  int countByUser_Id(Long userId);
+  int countByUserId(Long userId);
 
-  Availability getFirstByUser_Id(Long userId);
+  Availability getFirstByUserId(Long userId);
 }

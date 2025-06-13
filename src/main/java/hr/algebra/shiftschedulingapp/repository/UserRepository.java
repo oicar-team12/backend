@@ -24,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   void deleteUser(@Param("userId") Long id);
 
   int countByEmail(String email);
+
+  boolean existsByIdAndIsAdminIsTrue(Long id);
 }

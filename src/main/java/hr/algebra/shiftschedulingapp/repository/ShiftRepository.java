@@ -28,11 +28,11 @@ public interface ShiftRepository extends JpaRepository<Shift, Long> {
     @Param("endDate") LocalDate endDate
   );
 
-  boolean existsByGroup_IdAndDate_AndStartTime_AndEndTime(Long groupId, LocalDate date, LocalTime startTime, LocalTime endTime);
+  boolean existsByGroupIdAndDateAndStartTimeAndEndTime(Long groupId, LocalDate date, LocalTime startTime, LocalTime endTime);
 
-  boolean existsByIdAndGroup_Id(Long id, Long groupId);
+  boolean existsByIdAndGroupId(Long id, Long groupId);
 
-  int countByGroup_Id(Long groupId);
+  int countByGroupId(Long groupId);
 
-  Shift getFirstByGroup_Id(Long groupId);
+  Shift getFirstByGroupId(Long groupId);
 }

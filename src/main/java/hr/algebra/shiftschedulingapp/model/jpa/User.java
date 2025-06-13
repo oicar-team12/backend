@@ -55,6 +55,10 @@ public class User implements UserDetails {
   @Column(name = "password", nullable = false, length = MAX_VALUE)
   private String password;
 
+  @NotNull
+  @Column(name = "is_admin", nullable = false)
+  private boolean isAdmin;
+
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

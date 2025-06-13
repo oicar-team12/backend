@@ -45,7 +45,7 @@ public class GroupUserService {
 
   public void removeUserFromGroup(Long groupId, Long userId) {
     validateGroupMembership(groupId, userId);
-    groupUserRepository.deleteByGroup_IdAndUser_Id(groupId, userId);
+    groupUserRepository.deleteByGroupIdAndUserId(groupId, userId);
   }
 
   private void validateUserExistence(Long userId, Long groupId) {
@@ -53,13 +53,13 @@ public class GroupUserService {
       throw new RestException("User not found");
     }
 
-    if (groupUserRepository.existsByGroup_IdAndUser_Id(groupId, userId)) {
+    if (groupUserRepository.existsByGroupIdAndUserId(groupId, userId)) {
       throw new RestException("User already exists in group");
     }
   }
 
   private void validateGroupMembership(Long groupId, Long userId) {
-    if (!groupUserRepository.existsByGroup_IdAndUser_Id(groupId, userId)) {
+    if (!groupUserRepository.existsByGroupIdAndUserId(groupId, userId)) {
       throw new RestException("User does not exist in group");
     }
   }

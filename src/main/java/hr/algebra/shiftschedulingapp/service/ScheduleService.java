@@ -75,23 +75,23 @@ public class ScheduleService {
   }
 
   private void validateShiftAndUserExistence(Long shiftId, Long userId, Long groupId) {
-    if (!shiftRepository.existsByIdAndGroup_Id(shiftId, groupId)) {
+    if (!shiftRepository.existsByIdAndGroupId(shiftId, groupId)) {
       throw new RestException("Shift not found");
     }
 
-    if (!groupUserRepository.existsByGroup_IdAndUser_Id(groupId, userId)) {
+    if (!groupUserRepository.existsByGroupIdAndUserId(groupId, userId)) {
       throw new RestException("User not found");
     }
   }
 
   private void validateScheduleDuplication(ScheduleDto scheduleDto) {
-    if (scheduleRepository.existsByShift_IdAndUser_Id(scheduleDto.getShiftId(), scheduleDto.getUserId())) {
+    if (scheduleRepository.existsByShiftIdAndUserId(scheduleDto.getShiftId(), scheduleDto.getUserId())) {
       throw new RestException("This user has already been scheduled for this shift");
     }
   }
 
   private void validateScheduleExistence(Long groupId, Long id) {
-    if (!scheduleRepository.existsByShift_GroupId_AndId(groupId, id)) {
+    if (!scheduleRepository.existsByShiftGroupIdAndId(groupId, id)) {
       throw new RestException("Schedule not found");
     }
   }

@@ -127,7 +127,7 @@ class ScheduleControllerTest extends IntegrationTest {
       .andExpect(status().isOk())
       .andReturn();
 
-    assertEquals(2, scheduleRepository.countByUser_Id(USER_2));
+    assertEquals(2, scheduleRepository.countByUserId(USER_2));
   }
 
   @Test
@@ -141,7 +141,7 @@ class ScheduleControllerTest extends IntegrationTest {
       .andExpect(jsonPath("$.message").value(ERROR_DUPLICATE))
       .andReturn();
 
-    assertEquals(1, scheduleRepository.countByUser_Id(USER_2));
+    assertEquals(1, scheduleRepository.countByUserId(USER_2));
   }
 
   @Test
@@ -154,7 +154,7 @@ class ScheduleControllerTest extends IntegrationTest {
       .andExpect(status().isForbidden())
       .andReturn();
 
-    assertEquals(1, scheduleRepository.countByUser_Id(USER_2));
+    assertEquals(1, scheduleRepository.countByUserId(USER_2));
   }
 
   @Test
@@ -168,7 +168,7 @@ class ScheduleControllerTest extends IntegrationTest {
       .andExpect(jsonPath("$.message").value(ERROR_USER_NOT_FOUND))
       .andReturn();
 
-    assertEquals(1, scheduleRepository.countByUser_Id(USER_2));
+    assertEquals(1, scheduleRepository.countByUserId(USER_2));
   }
 
   @Test
@@ -182,33 +182,33 @@ class ScheduleControllerTest extends IntegrationTest {
       .andExpect(jsonPath("$.message").value(ERROR_SHIFT_NOT_FOUND))
       .andReturn();
 
-    assertEquals(1, scheduleRepository.countByUser_Id(USER_2));
+    assertEquals(1, scheduleRepository.countByUserId(USER_2));
   }
 
   @Test
   void deleteSchedule_manager_ok() throws Exception {
     Credentials credentials = login(MANAGER_EMAIL);
-    Long scheduleId = scheduleRepository.getFirstByUser_Id(USER_2).getId();
+    Long scheduleId = scheduleRepository.getFirstByUserId(USER_2).getId();
 
     mockMvc.perform(delete(format(SCHEDULE_PATH_WITH_ID, GROUP_1, scheduleId))
         .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken()))
       .andExpect(status().isOk())
       .andReturn();
 
-    assertEquals(0, scheduleRepository.countByUser_Id(USER_2));
+    assertEquals(0, scheduleRepository.countByUserId(USER_2));
   }
 
   @Test
   void deleteSchedule_userIsNotManager_forbidden() throws Exception {
     Credentials credentials = login(EMPLOYEE_EMAIL);
-    Long scheduleId = scheduleRepository.getFirstByUser_Id(USER_2).getId();
+    Long scheduleId = scheduleRepository.getFirstByUserId(USER_2).getId();
 
     mockMvc.perform(delete(format(SCHEDULE_PATH_WITH_ID, GROUP_1, scheduleId))
         .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken()))
       .andExpect(status().isForbidden())
       .andReturn();
 
-    assertEquals(1, scheduleRepository.countByUser_Id(USER_2));
+    assertEquals(1, scheduleRepository.countByUserId(USER_2));
   }
 
   @Test

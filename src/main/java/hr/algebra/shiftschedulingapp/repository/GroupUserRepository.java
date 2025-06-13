@@ -25,20 +25,20 @@ public interface GroupUserRepository extends JpaRepository<GroupUser, Long> {
   @Modifying(flushAutomatically = true, clearAutomatically = true)
   void updateRoleByGroupIdAndUserId(@Param("role") GroupUserRole role, @Param("groupId") Long groupId, @Param("userId") Long userId);
 
-  boolean existsByGroup_IdAndUser_Id(Long groupId, Long userId);
+  boolean existsByGroupIdAndUserId(Long groupId, Long userId);
 
-  boolean existsByGroup_IdAndUser_IdAndRole(Long groupId, Long userId, GroupUserRole role);
+  boolean existsByGroupIdAndUserIdAndRole(Long groupId, Long userId, GroupUserRole role);
 
-  void deleteByGroup_IdAndUser_Id(Long groupId, Long userId);
+  void deleteByGroupIdAndUserId(Long groupId, Long userId);
 
   void deleteByUserId(Long userId);
 
   @Query("SELECT gu.role FROM GroupUser gu WHERE gu.group.id = :groupId AND gu.user.id = :userId")
   GroupUserRole getRoleByGroupIdAndUserId(@Param("groupId") Long groupId, @Param("userId") Long userId);
 
-  int countByUser_Id(Long userId);
+  int countByUserId(Long userId);
 
-  int countByGroup_Id(Long groupId);
+  int countByGroupId(Long groupId);
 
-  GroupUser findByUser_Id(Long userId);
+  GroupUser findByUserId(Long userId);
 }

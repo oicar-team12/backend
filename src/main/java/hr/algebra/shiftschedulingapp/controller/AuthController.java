@@ -2,6 +2,7 @@ package hr.algebra.shiftschedulingapp.controller;
 
 import hr.algebra.shiftschedulingapp.model.dto.GenericAuthDto;
 import hr.algebra.shiftschedulingapp.model.dto.LoginRequestDto;
+import hr.algebra.shiftschedulingapp.model.dto.LoginResponseDto;
 import hr.algebra.shiftschedulingapp.model.dto.RegisterRequestDto;
 import hr.algebra.shiftschedulingapp.model.dto.RestErrorDto;
 import hr.algebra.shiftschedulingapp.service.AuthService;
@@ -40,7 +41,7 @@ public class AuthController {
     @ApiResponse(
       responseCode = "200",
       description = "Logged in successfully",
-      content = @Content(schema = @Schema(implementation = GenericAuthDto.class))
+      content = @Content(schema = @Schema(implementation = LoginResponseDto.class))
     ),
     @ApiResponse(
       responseCode = "400",
@@ -49,7 +50,7 @@ public class AuthController {
     )
   })
   @PostMapping("login")
-  public GenericAuthDto login(@RequestBody @Valid LoginRequestDto loginRequest, HttpServletResponse servletResponse) {
+  public LoginResponseDto login(@RequestBody @Valid LoginRequestDto loginRequest, HttpServletResponse servletResponse) {
     return authService.login(loginRequest, servletResponse);
   }
 

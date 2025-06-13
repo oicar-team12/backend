@@ -98,7 +98,7 @@ class ShiftControllerTest extends IntegrationTest {
       .andExpect(status().isOk())
       .andReturn();
 
-    assertEquals(4, shiftRepository.countByGroup_Id(GROUP_1));
+    assertEquals(4, shiftRepository.countByGroupId(GROUP_1));
   }
 
   @Test
@@ -112,7 +112,7 @@ class ShiftControllerTest extends IntegrationTest {
       .andExpect(jsonPath("$.message").value(ERROR_DUPLICATE))
       .andReturn();
 
-    assertEquals(3, shiftRepository.countByGroup_Id(GROUP_1));
+    assertEquals(3, shiftRepository.countByGroupId(GROUP_1));
   }
 
   @Test
@@ -125,7 +125,7 @@ class ShiftControllerTest extends IntegrationTest {
       .andExpect(status().isForbidden())
       .andReturn();
 
-    assertEquals(3, shiftRepository.countByGroup_Id(GROUP_1));
+    assertEquals(3, shiftRepository.countByGroupId(GROUP_1));
   }
 
   @Test
@@ -191,27 +191,27 @@ class ShiftControllerTest extends IntegrationTest {
   @Test
   void deleteShift_manager_ok() throws Exception {
     Credentials credentials = login(MANAGER_EMAIL);
-    Long shiftId = shiftRepository.getFirstByGroup_Id(GROUP_1).getId();
+    Long shiftId = shiftRepository.getFirstByGroupId(GROUP_1).getId();
 
     mockMvc.perform(delete(format(SHIFT_PATH_WITH_ID, GROUP_1, shiftId))
         .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken()))
       .andExpect(status().isOk())
       .andReturn();
 
-    assertEquals(2, shiftRepository.countByGroup_Id(GROUP_1));
+    assertEquals(2, shiftRepository.countByGroupId(GROUP_1));
   }
 
   @Test
   void deleteShift_userIsNotManager_forbidden() throws Exception {
     Credentials credentials = login(EMPLOYEE_EMAIL);
-    Long shiftId = shiftRepository.getFirstByGroup_Id(GROUP_1).getId();
+    Long shiftId = shiftRepository.getFirstByGroupId(GROUP_1).getId();
 
     mockMvc.perform(delete(format(SHIFT_PATH_WITH_ID, GROUP_1, shiftId))
         .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken()))
       .andExpect(status().isForbidden())
       .andReturn();
 
-    assertEquals(3, shiftRepository.countByGroup_Id(GROUP_1));
+    assertEquals(3, shiftRepository.countByGroupId(GROUP_1));
   }
 
   @Test
@@ -224,6 +224,6 @@ class ShiftControllerTest extends IntegrationTest {
       .andExpect(jsonPath("$.message").value(ERROR_NOT_FOUND))
       .andReturn();
 
-    assertEquals(3, shiftRepository.countByGroup_Id(GROUP_1));
+    assertEquals(3, shiftRepository.countByGroupId(GROUP_1));
   }
 }

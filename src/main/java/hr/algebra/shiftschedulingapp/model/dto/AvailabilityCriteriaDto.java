@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Availability criteria DTO used for selectively fetching availabilities")
 public class AvailabilityCriteriaDto {
 
   @Schema(

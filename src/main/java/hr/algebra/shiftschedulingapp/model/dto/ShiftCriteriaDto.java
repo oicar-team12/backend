@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Shift criteria DTO used for selectively fetching shifts")
 public class ShiftCriteriaDto {
 
   @Schema(

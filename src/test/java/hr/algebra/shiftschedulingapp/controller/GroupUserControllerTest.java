@@ -79,7 +79,7 @@ class GroupUserControllerTest extends IntegrationTest {
       .andExpect(status().isOk())
       .andReturn();
 
-    assertEquals(3, groupUserRepository.countByGroup_Id(GROUP_1));
+    assertEquals(3, groupUserRepository.countByGroupId(GROUP_1));
   }
 
   @Test
@@ -92,7 +92,7 @@ class GroupUserControllerTest extends IntegrationTest {
       .andExpect(jsonPath("$.message").value(ERROR_USER_NOT_FOUND))
       .andReturn();
 
-    assertEquals(2, groupUserRepository.countByGroup_Id(GROUP_1));
+    assertEquals(2, groupUserRepository.countByGroupId(GROUP_1));
   }
 
   @Test
@@ -105,7 +105,7 @@ class GroupUserControllerTest extends IntegrationTest {
       .andExpect(jsonPath("$.message").value(ERROR_DUPLICATE))
       .andReturn();
 
-    assertEquals(2, groupUserRepository.countByGroup_Id(GROUP_1));
+    assertEquals(2, groupUserRepository.countByGroupId(GROUP_1));
   }
 
   @Test
@@ -117,7 +117,7 @@ class GroupUserControllerTest extends IntegrationTest {
       .andExpect(status().isForbidden())
       .andReturn();
 
-    assertEquals(2, groupUserRepository.countByGroup_Id(GROUP_1));
+    assertEquals(2, groupUserRepository.countByGroupId(GROUP_1));
   }
 
   @Test
@@ -129,7 +129,7 @@ class GroupUserControllerTest extends IntegrationTest {
       .andExpect(status().isOk())
       .andReturn();
 
-    GroupUser modifiedGroupUser = groupUserRepository.findByUser_Id(USER_2);
+    GroupUser modifiedGroupUser = groupUserRepository.findByUserId(USER_2);
     assertEquals(MANAGER, modifiedGroupUser.getRole());
   }
 
@@ -163,7 +163,7 @@ class GroupUserControllerTest extends IntegrationTest {
       .andExpect(status().isOk())
       .andReturn();
 
-    assertEquals(1, groupUserRepository.countByGroup_Id(GROUP_1));
+    assertEquals(1, groupUserRepository.countByGroupId(GROUP_1));
   }
 
   @Test
@@ -176,7 +176,7 @@ class GroupUserControllerTest extends IntegrationTest {
       .andExpect(jsonPath("$.message").value(ERROR_USER_NOT_FOUND_IN_GROUP))
       .andReturn();
 
-    assertEquals(2, groupUserRepository.countByGroup_Id(GROUP_1));
+    assertEquals(2, groupUserRepository.countByGroupId(GROUP_1));
   }
 
   @Test
@@ -188,6 +188,6 @@ class GroupUserControllerTest extends IntegrationTest {
       .andExpect(status().isForbidden())
       .andReturn();
 
-    assertEquals(2, groupUserRepository.countByGroup_Id(GROUP_1));
+    assertEquals(2, groupUserRepository.countByGroupId(GROUP_1));
   }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "DTO for availabilities grouped by users")
 public class AvailabilityGroupedDto {
 
   @Schema(description = "User")

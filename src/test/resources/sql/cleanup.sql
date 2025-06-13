@@ -7,5 +7,6 @@ TRUNCATE TABLE
     refresh_tokens,
     schedules,
     shifts,
+    user_delete_requests,
     users
     RESTART IDENTITY CASCADE;

@@ -54,13 +54,13 @@ public class ShiftService {
   }
 
   private void validateShiftDuplication(Long groupId, ShiftDto shiftDto) {
-    if (shiftRepository.existsByGroup_IdAndDate_AndStartTime_AndEndTime(groupId, shiftDto.getDate(), shiftDto.getStartTime(), shiftDto.getEndTime())) {
+    if (shiftRepository.existsByGroupIdAndDateAndStartTimeAndEndTime(groupId, shiftDto.getDate(), shiftDto.getStartTime(), shiftDto.getEndTime())) {
       throw new RestException("A shift on this date with the same start and end time already exists in this group");
     }
   }
 
   private void validateShiftExistence(Long groupId, Long id) {
-    if (!shiftRepository.existsByIdAndGroup_Id(id, groupId)) {
+    if (!shiftRepository.existsByIdAndGroupId(id, groupId)) {
       throw new RestException("Shift not found");
     }
   }

@@ -118,7 +118,7 @@ class AvailabilityControllerTest extends IntegrationTest {
       .andExpect(status().isOk())
       .andReturn();
 
-    assertEquals(3, availabilityRepository.countByUser_Id(USER_2));
+    assertEquals(3, availabilityRepository.countByUserId(USER_2));
   }
 
   @Test
@@ -132,7 +132,7 @@ class AvailabilityControllerTest extends IntegrationTest {
       .andExpect(jsonPath("$.message").value(ERROR_DUPLICATE))
       .andReturn();
 
-    assertEquals(2, availabilityRepository.countByUser_Id(USER_2));
+    assertEquals(2, availabilityRepository.countByUserId(USER_2));
   }
 
   @Test
@@ -145,20 +145,20 @@ class AvailabilityControllerTest extends IntegrationTest {
       .andExpect(status().isForbidden())
       .andReturn();
 
-    assertEquals(2, availabilityRepository.countByUser_Id(USER_2));
+    assertEquals(2, availabilityRepository.countByUserId(USER_2));
   }
 
   @Test
   void deleteAvailability_employee_ok() throws Exception {
     Credentials credentials = login(EMPLOYEE_EMAIL);
-    Long availabilityId = availabilityRepository.getFirstByUser_Id(USER_2).getId();
+    Long availabilityId = availabilityRepository.getFirstByUserId(USER_2).getId();
 
     mockMvc.perform(delete(format(AVAILABILITY_PATH_WITH_ID, GROUP_1, availabilityId))
         .header(AUTHORIZATION, BEARER_PREFIX + credentials.getAccessToken()))
       .andExpect(status().isOk())
       .andReturn();
 
-    assertEquals(1, availabilityRepository.countByUser_Id(USER_2));
+    assertEquals(1, availabilityRepository.countByUserId(USER_2));
   }
 
   @Test
@@ -171,7 +171,7 @@ class AvailabilityControllerTest extends IntegrationTest {
       .andExpect(jsonPath("$.message").value(ERROR_NOT_FOUND))
       .andReturn();
 
-    assertEquals(2, availabilityRepository.countByUser_Id(USER_2));
+    assertEquals(2, availabilityRepository.countByUserId(USER_2));
   }
 
   @Test
@@ -183,6 +183,6 @@ class AvailabilityControllerTest extends IntegrationTest {
       .andExpect(status().isForbidden())
       .andReturn();
 
-    assertEquals(2, availabilityRepository.countByUser_Id(USER_2));
+    assertEquals(2, availabilityRepository.countByUserId(USER_2));
   }
 }

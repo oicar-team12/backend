@@ -3,6 +3,7 @@ package hr.algebra.shiftschedulingapp.service;
 import hr.algebra.shiftschedulingapp.exception.RestException;
 import hr.algebra.shiftschedulingapp.model.dto.GenericAuthDto;
 import hr.algebra.shiftschedulingapp.model.dto.LoginRequestDto;
+import hr.algebra.shiftschedulingapp.model.dto.LoginResponseDto;
 import hr.algebra.shiftschedulingapp.model.dto.RegisterRequestDto;
 import hr.algebra.shiftschedulingapp.model.jpa.User;
 import hr.algebra.shiftschedulingapp.repository.UserRepository;
@@ -17,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static hr.algebra.shiftschedulingapp.util.AuthUtil.getCurrentUser;
 import static hr.algebra.shiftschedulingapp.util.AuthUtil.getCurrentUserAccessToken;
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
@@ -29,11 +29,10 @@ public class AuthService {
   private final AuthenticationManager authenticationManager;
   private final RefreshTokenService refreshTokenService;
   private final AccessTokenService accessTokenService;
-  private final UserService userService;
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
-  public GenericAuthDto login(LoginRequestDto loginRequest, HttpServletResponse servletResponse) {
+  public LoginResponseDto login(LoginRequestDto loginRequest, HttpServletResponse servletResponse) {
     try {
       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
       User user = (User) authentication.getPrincipal();
@@ -41,7 +40,9 @@ public class AuthService {
       String accessToken = accessTokenService.generateToken(user);
       refreshTokenService.generateTokenAndSetCookie(user, servletResponse);
 
-      return new GenericAuthDto(accessToken);
+      return new LoginResponseDto(
+        user.getId(), user.getFirstName(), user.getLastName(), user.isAdmin(), accessToken
+      );
     } catch (BadCredentialsException ex) {
       throw new RestException("Invalid credentials");
     }
@@ -70,12 +71,5 @@ public class AuthService {
       .setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
     userRepository.save(user);
-  }
-
-  public void deleteUserAndLogout(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-    Long userId = getCurrentUser().getId();
-
-    logout(servletRequest, servletResponse);
-    userService.deleteUser(userId);
   }
 }

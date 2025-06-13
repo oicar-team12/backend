@@ -33,6 +33,10 @@ public class AccessTokenService {
       );
   }
 
+  public void revokeTokenByUserId(Long userId) {
+    accessTokenRepository.deleteByUserId(userId);
+  }
+
   public boolean isExistingTokenValid(String token) {
     return accessTokenRepository.findByToken(token)
       .map(jwtTokenService::isTokenValid)

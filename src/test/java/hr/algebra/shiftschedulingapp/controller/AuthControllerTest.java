@@ -72,8 +72,8 @@ class AuthControllerTest extends IntegrationTest {
     assertNotNull(response.getAccessToken());
 
     Long userId = userRepository.findByEmail(LOGIN_EMAIL).get().getId();
-    assertEquals(1, accessTokenRepository.countByUser_Id(userId));
-    assertEquals(1, refreshTokenRepository.countByUser_Id(userId));
+    assertEquals(1, accessTokenRepository.countByUserId(userId));
+    assertEquals(1, refreshTokenRepository.countByUserId(userId));
   }
 
   @Test
@@ -85,8 +85,8 @@ class AuthControllerTest extends IntegrationTest {
       .andReturn();
 
     Long userId = userRepository.findByEmail(LOGIN_EMAIL).get().getId();
-    assertEquals(0, accessTokenRepository.countByUser_Id(userId));
-    assertEquals(0, refreshTokenRepository.countByUser_Id(userId));
+    assertEquals(0, accessTokenRepository.countByUserId(userId));
+    assertEquals(0, refreshTokenRepository.countByUserId(userId));
   }
 
   @Test
@@ -101,8 +101,8 @@ class AuthControllerTest extends IntegrationTest {
       .andReturn();
 
     Long userId = userRepository.findByEmail(LOGIN_EMAIL).get().getId();
-    assertEquals(1, accessTokenRepository.countByUser_Id(userId));
-    assertEquals(1, refreshTokenRepository.countByUser_Id(userId));
+    assertEquals(1, accessTokenRepository.countByUserId(userId));
+    assertEquals(1, refreshTokenRepository.countByUserId(userId));
 
     Credentials responseCredentials = extractTokens(result);
 
@@ -123,8 +123,8 @@ class AuthControllerTest extends IntegrationTest {
       .andReturn();
 
     Long userId = userRepository.findByEmail(LOGIN_EMAIL).get().getId();
-    assertEquals(1, accessTokenRepository.countByUser_Id(userId));
-    assertEquals(1, refreshTokenRepository.countByUser_Id(userId));
+    assertEquals(1, accessTokenRepository.countByUserId(userId));
+    assertEquals(1, refreshTokenRepository.countByUserId(userId));
 
     assertEquals(1, accessTokenRepository.countByToken(initialCredentials.getAccessToken()));
     assertEquals(1, refreshTokenRepository.countByToken(initialCredentials.getRefreshToken()));
@@ -143,8 +143,8 @@ class AuthControllerTest extends IntegrationTest {
       .andExpect(cookie().maxAge(REFRESH_TOKEN_COOKIE_NAME, 0))
       .andReturn();
 
-    assertEquals(0, accessTokenRepository.countByUser_Id(1L));
-    assertEquals(0, refreshTokenRepository.countByUser_Id(1L));
+    assertEquals(0, accessTokenRepository.countByUserId(1L));
+    assertEquals(0, refreshTokenRepository.countByUserId(1L));
   }
 
   @Test
@@ -157,8 +157,8 @@ class AuthControllerTest extends IntegrationTest {
       .andReturn();
 
     Long userId = userRepository.findByEmail(LOGIN_EMAIL).get().getId();
-    assertEquals(1, accessTokenRepository.countByUser_Id(userId));
-    assertEquals(1, refreshTokenRepository.countByUser_Id(userId));
+    assertEquals(1, accessTokenRepository.countByUserId(userId));
+    assertEquals(1, refreshTokenRepository.countByUserId(userId));
   }
 
   @Test

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Availability DTO")
 public class AvailabilityDto {
 
   @Schema(

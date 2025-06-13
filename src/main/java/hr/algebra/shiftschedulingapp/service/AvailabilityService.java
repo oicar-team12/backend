@@ -48,7 +48,7 @@ public class AvailabilityService {
 
   public void addAvailability(Long groupId, AvailabilityDto availabilityDto) {
     Long userId = getCurrentUser().getId();
-    if (availabilityRepository.existsByGroup_IdAndUser_IdAndDate(groupId, userId, availabilityDto.getDate())) {
+    if (availabilityRepository.existsByGroupIdAndUserIdAndDate(groupId, userId, availabilityDto.getDate())) {
       throw new RestException("The specified date is already marked in this group");
     }
 
@@ -62,7 +62,7 @@ public class AvailabilityService {
 
   public void removeAvailability(Long groupId, Long id) {
     Long userId = getCurrentUser().getId();
-    if (!availabilityRepository.existsByIdAndGroup_IdAndUser_Id(id, groupId, userId)) {
+    if (!availabilityRepository.existsByIdAndGroupIdAndUserId(id, groupId, userId)) {
       throw new RestException("Availability not found");
     }
 

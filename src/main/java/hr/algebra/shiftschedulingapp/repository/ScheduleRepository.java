@@ -49,11 +49,11 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     @Param("endDate") LocalDate endDate
   );
 
-  boolean existsByShift_IdAndUser_Id(Long shiftId, Long userId);
+  boolean existsByShiftIdAndUserId(Long shiftId, Long userId);
 
-  boolean existsByShift_GroupId_AndId(Long shiftGroupId, Long id);
+  boolean existsByShiftGroupIdAndId(Long shiftGroupId, Long id);
 
-  int countByUser_Id(Long userId);
+  int countByUserId(Long userId);
 
-  Schedule getFirstByUser_Id(Long userId);
+  Schedule getFirstByUserId(Long userId);
 }

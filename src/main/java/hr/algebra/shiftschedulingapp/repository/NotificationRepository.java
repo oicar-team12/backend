@@ -7,5 +7,5 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
   void deleteByUserId(Long userId);
 
-  int countByUser_Id(Long userId);
+  int countByUserId(Long userId);
 }

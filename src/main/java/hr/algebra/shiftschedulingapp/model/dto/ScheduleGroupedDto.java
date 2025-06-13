@@ -10,6 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "DTO for schedules grouped by shifts")
 public class ScheduleGroupedDto {
 
   @Schema(description = "Shift")

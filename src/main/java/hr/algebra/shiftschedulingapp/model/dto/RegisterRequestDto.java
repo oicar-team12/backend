@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Register request DTO")
 public class RegisterRequestDto {
 
   @NotBlank

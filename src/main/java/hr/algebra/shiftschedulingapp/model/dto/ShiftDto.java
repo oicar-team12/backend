@@ -11,6 +11,7 @@ import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Shift DTO")
 public class ShiftDto {
 
   @Schema(

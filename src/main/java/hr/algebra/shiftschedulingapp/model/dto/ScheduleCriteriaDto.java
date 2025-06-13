@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Schedule criteria DTO used for selectively fetching schedules")
 public class ScheduleCriteriaDto {
 
   @Schema(

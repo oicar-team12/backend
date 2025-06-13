@@ -52,6 +52,10 @@ public class RefreshTokenService {
     removeCookie(servletResponse);
   }
 
+  public void revokeTokenByUserId(Long userId) {
+    refreshTokenRepository.deleteByUserId(userId);
+  }
+
   private String generateToken(User user) {
     refreshTokenRepository.deleteByUserId(user.getId());
 
