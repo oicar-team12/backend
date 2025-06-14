@@ -2,6 +2,7 @@ package hr.algebra.shiftschedulingapp.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hr.algebra.shiftschedulingapp.converter.CryptoConverter;
 import hr.algebra.shiftschedulingapp.exception.ForbiddenException;
 import hr.algebra.shiftschedulingapp.exception.RestException;
 import hr.algebra.shiftschedulingapp.interfaces.AvailabilityProjection;
@@ -35,6 +36,7 @@ public class AvailabilityService {
   private final GroupUserRepository groupUserRepository;
   private final UserRepository userRepository;
   private final ObjectMapper objectMapper;
+  private final CryptoConverter cryptoConverter;
 
   public List<AvailabilityGroupedDto> getAvailabilities(Long groupId, AvailabilityCriteriaDto availabilityCriteriaDto) {
     validateAvailabilityViewership(groupId, availabilityCriteriaDto);
@@ -93,6 +95,9 @@ public class AvailabilityService {
       projection.getAvailabilities(),
       new TypeReference<>() {}
     );
+
+    user.setFirstName(cryptoConverter.convertToEntityAttribute(user.getFirstName()));
+    user.setLastName(cryptoConverter.convertToEntityAttribute(user.getLastName()));
 
     return new AvailabilityGroupedDto(user, availabilities);
   }

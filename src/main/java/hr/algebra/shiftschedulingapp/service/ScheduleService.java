@@ -2,6 +2,7 @@ package hr.algebra.shiftschedulingapp.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hr.algebra.shiftschedulingapp.converter.CryptoConverter;
 import hr.algebra.shiftschedulingapp.exception.ForbiddenException;
 import hr.algebra.shiftschedulingapp.exception.RestException;
 import hr.algebra.shiftschedulingapp.interfaces.ScheduleProjection;
@@ -36,6 +37,7 @@ public class ScheduleService {
   private final UserRepository userRepository;
   private final GroupUserRepository groupUserRepository;
   private final ObjectMapper objectMapper;
+  private final CryptoConverter cryptoConverter;
 
   public List<ScheduleGroupedDto> getSchedules(Long groupId, ScheduleCriteriaDto scheduleCriteriaDto) {
     validateScheduleViewership(groupId, scheduleCriteriaDto);
@@ -106,10 +108,17 @@ public class ScheduleService {
       projection.getShift(),
       ShiftDto.class
     );
-    List<UserDto> users = objectMapper.readValue(
+    List<UserDto> rawUsers = objectMapper.readValue(
       projection.getUsers(),
       new TypeReference<>() {}
     );
+
+    List<UserDto> users = rawUsers.stream()
+      .map(u -> new UserDto(
+        u.getId(),
+        cryptoConverter.convertToEntityAttribute(u.getFirstName()),
+        cryptoConverter.convertToEntityAttribute(u.getLastName())
+      )).toList();
 
     return new ScheduleGroupedDto(shift, users);
   }
