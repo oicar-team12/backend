@@ -4,7 +4,6 @@ import hr.algebra.shiftschedulingapp.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -23,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
+import static org.springframework.http.HttpMethod.OPTIONS;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -41,7 +41,7 @@ public class SecurityConfig {
       .csrf(AbstractHttpConfigurer::disable)
       .cors(CorsConfigurer::disable)
       .authorizeHttpRequests(authorize -> authorize
-        .requestMatchers(HttpMethod.OPTIONS, "**").permitAll()
+        .requestMatchers(OPTIONS, "**").permitAll()
         .requestMatchers(
           "/auth/**",
           "/swagger-ui/**",
